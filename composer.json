@@ -1,0 +1,19 @@
+{
+    "name": "mxapis/php-apns",
+    "description": "Object Oriented PHP Apple Push Notification Integration Library",
+    "require": {
+        "php": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "MXAPIS\\APNS\\": "src/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kristaps Veveris",
+            "email": "kristaps.veveris@gmail.com"
+        }
+    ]
+}
