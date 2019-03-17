@@ -4,41 +4,76 @@ namespace MXAPIS\APNS;
 
 class Certificate
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private $certificateString;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $password;
 
-    public function __construct(string $certificateString, string $password = null)
+    /**
+     * Construct.
+     *
+     * @param string $certificateString
+     * @param string $password
+     */
+    public function __construct($certificateString, $password = null)
     {
-        $this->certificateString = $certificateString;
+        $this->certificateString = (string) $certificateString;
         $this->password = $password;
     }
 
-    public function certificateString(): string
+    /**
+     * Gets the certificate string.
+     *
+     * @return string $certificateString
+     */
+    public function getCertificateString()
     {
         return $this->certificateString;
     }
 
-    public function password(): string
+    /**
+     * Gets the certificate password.
+     *
+     * @return string $password
+     */
+    public function getPassword()
     {
         return $this->password;
     }
 
-    public function writeTo(string $path): void
+    /**
+     * Writes the certificate to the given file path.
+     *
+     * @param string $path
+     */
+    public function writeTo($path)
     {
         file_put_contents($path, $this->certificateString);
     }
 
-    public function writeToTmp(): string
+    /**
+     * Writes the certificate to a temporary file and returns the path.
+     *
+     * @return string $path
+     */
+    public function writeToTmp()
     {
         $path = tempnam(sys_get_temp_dir(), 'cert_');
+
         $this->writeTo($path);
+
         return $path;
     }
 
-    public function __toString(): string
+    /**
+     * @return string
+     */
+    public function __toString()
     {
         return $this->certificateString;
     }

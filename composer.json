@@ -2,7 +2,10 @@
     "name": "mxapis/php-apns",
     "description": "Object Oriented PHP Apple Push Notification Integration Library",
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "ext-openssl": "*",
+        "ext-zip": "*",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
