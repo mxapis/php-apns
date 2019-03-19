@@ -89,16 +89,4 @@ class Client
 
         return $this->responses;
     }
-
-    protected function processResponse($httpResponse, $identifier): Response
-    {
-        $response = new Response(
-            $httpResponse->getStatusCode(),
-            $httpResponse->getHeader('apns-id')[0]
-        );
-        if (!$response->success()) {
-
-        }
-        return $response;
-    }
 }
