@@ -6,7 +6,7 @@ use GuzzleHttp\Client AS HttpClient;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Pool;
-use GuzzleHttp\Psr7\Response AS HttpResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class Client
 {
@@ -25,7 +25,7 @@ class Client
     /** @var ClientNotification[] */
     protected $notifications;
 
-    /** @var */
+    /** @var Response[] */
     protected $responses;
 
     public function __construct(Certificate $certificate)
@@ -49,6 +49,9 @@ class Client
         $this->notifications[] = $notification;
     }
 
+    /**
+     * @return Response[]
+     */
     public function push(): array
     {
         $certificatePath = $this->certificate->writeToTmp();
@@ -71,19 +74,17 @@ class Client
             }
         };
 
-        $pool = new Pool($client, $requests($this->notifications), [
+        (new Pool($client, $requests($this->notifications), [
             'concurrency' => 100,
-            'fulfilled'   => function (HttpResponse $response, $identifier) use ($responseProcessor) {
+            'fulfilled'   => function (ResponseInterface $response, $identifier) use (&$responseProcessor) {
                 $responseProcessor->process($response, $identifier);
             },
-            'rejected'    => function ($reason, $identifier) use ($responseProcessor) {
+            'rejected'    => function ($reason, $identifier) use (&$responseProcessor) {
                 if ($reason instanceof ClientException) {
                     $responseProcessor->process($reason->getResponse(), $identifier);
                 }
             },
-        ]);
-        $promise = $pool->promise();
-        $promise->wait();
+        ]))->promise()->wait();
 
         $this->responses = $responseProcessor->responses();
 

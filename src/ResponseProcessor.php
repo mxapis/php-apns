@@ -2,7 +2,7 @@
 
 namespace MXAPIS\APNS;
 
-use GuzzleHttp\Psr7\Response AS HttpResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class ResponseProcessor
 {
@@ -14,7 +14,7 @@ class ResponseProcessor
         $this->responses = [];
     }
 
-    public function process(HttpResponse $httpResponse, $identifier) {
+    public function process(ResponseInterface $httpResponse, $identifier) {
         $response = new Response($httpResponse->getStatusCode(), $httpResponse->getHeader('apns-id')[0]);
         $response->setIdentifier($identifier);
 
