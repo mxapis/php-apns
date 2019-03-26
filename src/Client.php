@@ -16,6 +16,8 @@ class Client
     /** @var string */
     const HOST_PRODUCTION = "https://api.push.apple.com";
 
+    protected $httpVersion = '2.0';
+
     /** @var Certificate */
     protected $certificate;
 
@@ -36,6 +38,11 @@ class Client
     public static function newClient(Certificate $certificate): self
     {
         return new static($certificate);
+    }
+
+    public function setHttpVersion(string $version): void
+    {
+        $this->httpVersion = $version;
     }
 
     public function production(): self
@@ -70,7 +77,7 @@ class Client
         $requests = function ($notifications) {
             foreach ($notifications as $notification) {
                 yield  $notification->identifier() => new Request('POST', sprintf('/3/device/%s', $notification->deviceToken()), [],
-                    $notification->getPayloadJson(), '2.0');
+                    $notification->getPayloadJson(), $this->httpVersion);
             }
         };
 
