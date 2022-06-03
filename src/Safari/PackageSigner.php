@@ -21,7 +21,7 @@ class PackageSigner
         // Sign the manifest.json file with the private key from the certificate
         $certData = openssl_x509_read($certs['cert']);
         $privateKey = openssl_pkey_get_private($certs['pkey'], $certPassword);
-        openssl_pkcs7_sign($manifestJsonPath, $signaturePath, $certData, $privateKey, array(), PKCS7_BINARY | PKCS7_DETACHED, __DIR__ . '/../../resources/AppleWWDRCA.pem');
+        openssl_pkcs7_sign($manifestJsonPath, $signaturePath, $certData, $privateKey, array(), PKCS7_BINARY | PKCS7_DETACHED, __DIR__ . '/../../resources/AppleWWDRCAG4.pem');
         // Convert the signature from PEM to DER
         $signaturePem = file_get_contents($signaturePath);
         $matches = array();
