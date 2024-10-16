@@ -34,6 +34,7 @@ class Client
     public function __construct(Certificate $certificate)
     {
         $this->certificate = $certificate;
+        $this->notifications = [];
     }
 
     public static function newClient(Certificate $certificate): self
@@ -90,6 +91,7 @@ class Client
         ]))->promise()->wait();
 
         $this->responses = $responseProcessor->responses();
+        $this->notifications = [];
 
         return $this->responses;
     }
